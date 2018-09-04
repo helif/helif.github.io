@@ -7,7 +7,7 @@
 angular.module("mainApp").service('flickrService', ['$http', function($http) {
   var resource = {
     getFeed: {
-      url: "https://api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=JSON_CALLBACK&tags="
+      url: "https://api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=JSON_CALLBACK&lang=en-us&tagmode=ANY&safe_search=1&tags=children,"
     }
   }
 
