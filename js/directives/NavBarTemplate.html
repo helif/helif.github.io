@@ -1,8 +1,9 @@
-    <nav class="navbar navbar-dark bg-dark">
-        <form id="navbar-form" class="form-inline" ng-submit="search()">
-            <input id="navbar-input" class="form-control mr-sm-2" type="search" required 
-                placeholder="Search" aria-label="Search" ng-model="tags" maxlength="25">
-            <button id="navbar-button" class="btn btn-outline-info my-2 my-sm-0" 
-                type="submit" ng-disable="searching">Search</button>
-        </form>
-    </nav>
+<nav class="navbar navbar-dark bg-primary">
+    <span class="navbar-brand mb-0 h1">{{ view.navbarTitle }}</span>
+    <form id="navbar-form" class="form-inline" ng-submit="search()">
+        <input id="navbar-input" class="form-control mr-sm-2" type="search" required 
+            placeholder="{{view.navbarPlaceHolder}}" aria-label="Search" ng-model="tags" maxlength="25">
+        <button id="navbar-button" class="btn btn-dark my-2 my-sm-0" 
+            type="submit" ng-disabled="view.searching">Search</button>
+    </form>
+</nav>

@@ -1,19 +1,19 @@
-<div ng-if="visible">
-    <table class="table table-striped table-dark" ng-show="hasResults()">
+<div ng-if="view.visible">
+    <table class="table table-striped table-dark container" ng-show="hasResults()">
         <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col float-right">Image</th>
+            <th scope="col">Image</th>
+            <th scope="col"><span>Title</span><input id="grid-input" ng-model="data.filter"
+                class="form-control-sm ml-2" type="text" placeholder="{{view.gridInputPlaceHolder}}" maxlength="25">
+            </th>
+            <th scope="col float-right">Published</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="item in list">
-            <th scope="row"><p class="lead">{{$index + 1}}</p></th>
-            <td><p class="lead">{{ formatTitle(item.title) }}</p><br><br>
-                <p class="font-italic pl-3">-Published on: {{ formatDate(item.published)}}</p>
-            </td>
-            <td><img class="rounded float-right" ng-src="{{item.media.m}}" /></td>
+        <tr ng-repeat="item in data.results | filter : data.filter">
+            <td><img class="rounded" ng-src="{{item.media.m}}" /></td>
+            <td><p>{{ $index + 1 }} - {{ formatTitle(item.title) }}</p></td>
+            <td><p>{{ formatDate(item.published)}}</p></td>
         </tr>
         </tbody>
     </table>

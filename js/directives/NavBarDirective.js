@@ -7,7 +7,7 @@
 angular.module("mainApp").directive('navbarDirective', ['flickrService', function(flickrService) {
     return {
         restrict: 'E',
-        replace: false,
+        replace: true,
         templateUrl:'js/directives/NavBarTemplate.html',
         scope: {
             tags: '=',
@@ -22,25 +22,42 @@ angular.module("mainApp").directive('navbarDirective', ['flickrService', functio
      * Initialising scope variables
      */
     function navbarLink($scope) {
-        $scope.searching = false;
+        $scope.view = {
+            searching: false,
+            navbarTitle: "Flickr Search!",
+            navbarPlaceHolder: "Enter text"
+        }
     }
     
     /**
      * Controller function
      */
-    function navbarController($scope, flickrService) {
-
+    function navbarController($scope, flickrService, $window) {
+    
         $scope.search = function() {
-            $scope.searching = true;
+            $scope.view.searching = true;
 
             flickrService.getFeed($scope.tags, function(data) {
                 $scope.list = data.items; 
-                $scope.searching = false;
+                $scope.view.searching = false;
             }, function() {
                 // There was an problem with the request
                 $scope.list = [];
-                $scope.searching = false;
+                $scope.view.searching = false;
             });
-          }
+        }
+
+        init($window);
+    }
+
+    /**
+     * Initialises the controller - initial state
+     * @param $window 
+     */
+    function init($window) {
+        var element = $window.document.getElementById("navbar-input");
+        if (element) { 
+            element.focus();
+        }
     }
 }]);

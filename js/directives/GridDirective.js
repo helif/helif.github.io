@@ -10,8 +10,7 @@ angular.module("mainApp").directive('gridDirective', ['flickrService', function(
         replace: false,
         templateUrl:'js/directives/GridTemplate.html',
         scope: {
-            tags: '=',
-            list: '='
+            list: '<'
         },
         link: gridLink,
         controller: gridController
@@ -23,14 +22,18 @@ angular.module("mainApp").directive('gridDirective', ['flickrService', function(
      */
     function gridLink($scope) {
         $scope.error = "Something went wrong with your request. Please refine your search.";
-        $scope.visible = false;
+        $scope.view = {
+            visible: false,
+            gridInputPlaceHolder: "Enter filter"
+        };
+        $scope.data  = {};
     }
  
     /**
      * Controller function
      * Defines scope binding methods
      */
-    function gridController($scope, flickrService) {
+    function gridController($scope, flickrService, $timeout, $window) {
         var options = {
             weekday: 'long', 
             year: 'numeric', 
@@ -43,7 +46,7 @@ angular.module("mainApp").directive('gridDirective', ['flickrService', function(
             return title && title.trim() ? title.trim() : "No Title";
         };
 
-        // formats the image published data
+        // formats the image published date
         $scope.formatDate = function(date){
             if (date) {
                 var newDate = new Date(date);
@@ -56,8 +59,12 @@ angular.module("mainApp").directive('gridDirective', ['flickrService', function(
         }
 
         $scope.hasResults = function() {
-            return $scope.list && !_.isEmpty($scope.list);
+            return $scope.data && $scope.data.results && !_.isEmpty($scope.data.results);
         };
+
+        $scope.$watch('list', function(newValue, oldValue) {
+            setResults($scope, $scope.list);
+        });
 
         // initialising controller
         init($scope);
@@ -68,13 +75,25 @@ angular.module("mainApp").directive('gridDirective', ['flickrService', function(
      * @param {directive isolated scope} $scope 
      */
     function init($scope) {
-         flickrService.getFeed($scope.tags, function(data) {
-            $scope.list = data.items;
-            $scope.visible = true;
+         flickrService.getFeed("", function(data) {
+            setResults($scope, data.items);
+            $scope.view.visible = true;
         }, function() {
             // There was an problem with the request
-            $scope.list = [];
-            $scope.visible = true;
+            setResults($scope, []);
+            $scope.view.visible = true;
         });
+    }
+
+    /**
+     * Sets the results to display in the view
+     * It also removes any existing in data.filter
+     * @param {directive isolated scope} $scope 
+     * @param {current search results} results 
+     */
+    function setResults($scope, results) {
+        $scope.data = {
+            results: results
+        };
     }
 }]);
