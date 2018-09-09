@@ -3,7 +3,8 @@
     <head>
         <title>AngularJS 1.5 Example | Flickr Search</title>
 
-        <script src="lib/angular-1.5.8.min.js"></script>
+        <script src="lib/angular-1.5.8.min.js"></script>        
+        <script src="lib/angular-resource.min.js"></script>
         <script src="lib/underscore.min.js"></script>
         <script src="js/app.js"></script>
 
@@ -19,8 +20,8 @@
     <body ng-cloak ng-controller="MainController">
         <!-- Navigation Bar, includes the search box -->
         <navbar-directive tags="tags" list="list"></navbar-directive>
-        <h1 class="bg-primary text-white mb-0">{{message}}!</h1>
+
         <!-- Grid Table, displays the search results -->
-        <grid-directive tags="tags" list="list"></grid-directive>
+        <grid-directive list="list"></grid-directive>
     </body>
 </html>
